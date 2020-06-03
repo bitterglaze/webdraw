@@ -1,0 +1,39 @@
+// Place all the styles related to the drawroom controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+#canvas {
+  display: block;
+  background-color: yellow;
+  // border: 2px solid black;
+}
+
+// .cover {
+//   display: flex;
+// }
+
+.saveButn {
+  z-index: 1;
+  margin: auto;
+  // margin-top: 50vh;
+  margin-left: 50vw;
+  width: 100px;
+  height: 35px;
+  border-top: 2px solid white;
+  border-right: 2px solid #222;
+  border-bottom: 2px solid #222;
+  border-left: 2px solid white;
+
+  &:hover {
+    border-top: 2px solid #666;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    border-left: 2px solid #666;
+  }
+
+  &:focus {
+    border-top: 2px solid #666;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    border-left: 2px solid #666;
+  }
+}
