@@ -2,8 +2,10 @@ Rails.application.routes.draw do
   resources :tips
   resources :steps
   resources :players
+
   namespace :api, format: :json do
     resources :drawroom do
+    patch 'drawrooms' => 'drawrooms#update'
       collection do
         get 'index'
         post 'sync'

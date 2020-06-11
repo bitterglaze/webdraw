@@ -10,13 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_23_141455) do
+ActiveRecord::Schema.define(version: 2020_06_10_174539) do
+
+  create_table "drawrooms", force: :cascade do |t|
+    t.boolean "empty"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "painting_container"
+  end
 
   create_table "players", force: :cascade do |t|
     t.string "name"
     t.boolean "opening_player"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "guest_uuid"
   end
 
   create_table "steps", force: :cascade do |t|

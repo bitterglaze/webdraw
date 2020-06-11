@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ActionCable } from 'react-actioncable-provider'
+import { ActionCableConsumer } from 'react-actioncable-provider'
 
 export default class CanvasContainer extends Component {
   constructor(props) {
@@ -7,9 +7,10 @@ export default class CanvasContainer extends Component {
 
     this.state = {
       painting: false,
-      // canvas: '',
-      points: this.props.points
+      paintings: [this.props.points]
     }
+
+    this.canvas = React.createRef()
 
     this.renderCanvas = this.renderCanvas.bind(this)
     this.randColor = this.randColor.bind(this)
@@ -24,8 +25,21 @@ export default class CanvasContainer extends Component {
     this.renderPoints = this.renderPoints.bind(this)
   }
 
+  // preloadDrowroom() {}
+
+  componentDidMount() {
+    this.renderCanvas()
+    this.randColor()
+    this.renderPoints()
+    // this.handleReceivedCanvas()
+  }
+
+  componentDidUpdate() {
+    this.renderPoints()
+  }
+
   randColor() {
-    var colors = [
+    let colors = [
       '#B2FF34',
       '#AB83FA',
       '#FF86C0',
@@ -36,55 +50,16 @@ export default class CanvasContainer extends Component {
       '#FF7697',
       '#31D0D8',
       '#78B6FF',
-      '#FFFFFF',
       '#E4ABFF'
     ]
-    var rand = colors[Math.floor(Math.random() * colors.length)]
 
-    document.getElementById('canvas').style.backgroundColor = rand
-  }
-
-  componentDidMount() {
-    this.renderCanvas()
-    this.randColor()
-    this.renderPoints()
-  }
-  //
-  // componentWillReceiveProps() {
-  //   this.renderPoints()
-  // }
-
-  componentDidUpdate() {
-    this.renderPoints()
-  }
-
-  // generateUUID() {
-  //   let array = new Uint32Array(8)
-  //   window.crypto.getRandomValues(array)
-  //   let str = ''
-  //   for (let i = 0; i < array.length; i++) {
-  //     str += (i < 2 || i > 5 ? '' : '-') + array[i].toString(16).slice(-4)
-  //   }
-  //   return str
-  // }
-
-  savePointsFromResponce(data) {
-    const { points } = this.props
-    let syncpoints = []
-
-    // var syncpoints = ([data] = data.push = [])
-
-    syncpoints.forEach((syncpoint) => {
-      points.push(data)
-    })
-
-    this.setState({
-      points
-    })
+    const rand = colors[Math.floor(Math.random() * colors.length)]
+    const canvas = this.canvas.current
+    canvas.style.backgroundColor = rand
   }
 
   renderCanvas() {
-    const canvas = document.getElementById('canvas')
+    const canvas = this.canvas.current
 
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
@@ -92,49 +67,44 @@ export default class CanvasContainer extends Component {
     canvas.addEventListener('mousedown', this.handleMouseDown)
     canvas.addEventListener('mouseup', this.handleMouseUp)
     canvas.addEventListener('mousemove', this.handleMouseMove)
-    // canvas.addEventListener('mousemove', this.syncDrawing)
-
-    // const id = this.generateUUID()
-    //
-    // let { canvases } = this.state
-    //
-    // canvases[id] = canvas
-    // console.log(id)
-    //
-    // this.setState({
-    //   canvas
-    // })
   }
 
   renderPoints() {
+    const canvas = this.canvas.current
     const ctx = canvas.getContext('2d')
-    const { points } = this.state
+    const { paintings } = this.state
 
-    points.forEach((point) => {
-      ctx.lineWidth = 3 * 2
+    paintings.forEach((painting) => {
+      let prevPoint = false
 
-      ctx.lineTo(point[0], point[1])
-      ctx.stroke()
+      painting.forEach((point) => {
+        if (prevPoint) {
+          ctx.lineWidth = 3 * 2
+          ctx.beginPath()
+          ctx.moveTo(prevPoint[0], prevPoint[1])
+          ctx.lineTo(point[0], point[1])
+          ctx.closePath()
+          ctx.stroke()
+        }
 
-      ctx.beginPath()
-      ctx.arc(point[0], point[1], 3, 0, Math.PI * 2)
-
-      ctx.fill()
-
-      ctx.beginPath()
-      ctx.moveTo(point[0], point[1])
+        prevPoint = point
+      })
     })
+    // console.log(paintings)
   }
 
   handleMouseDown(e) {
+    const { paintings } = this.state
+    paintings.push([])
+
     this.setState({
-      painting: true
+      painting: true,
+      paintings
     })
   }
 
   handleMouseUp(e) {
-    const ctx = canvas.getContext('2d')
-    ctx.beginPath()
+    this.saveCanvas()
 
     this.setState({
       painting: false
@@ -142,43 +112,34 @@ export default class CanvasContainer extends Component {
   }
 
   handleMouseMove(e) {
-    const ctx = canvas.getContext('2d')
+    let { paintings, painting } = this.state
 
-    if (this.state.painting) {
-      console.log(e.clientX, e.clientY)
-      ctx.lineWidth = 3 * 2
+    if (painting) {
+      paintings[paintings.length - 1].push([e.clientX, e.clientY])
 
-      ctx.lineTo(e.clientX, e.clientY)
-      ctx.stroke()
-
-      ctx.beginPath()
-      ctx.arc(e.clientX, e.clientY, 3, 0, Math.PI * 2)
-
-      ctx.fill()
-
-      ctx.beginPath()
-      ctx.moveTo(e.clientX, e.clientY)
+      this.setState({
+        paintings
+      })
     }
-
-    let { points } = this.state
-    points.push([e.clientX, e.clientY])
-    // canvases.points.push([data])
-    // data.push([e.clientX, e.clientY])
-
-    this.setState({
-      points
-    })
   }
 
   saveCanvas() {
-    const { points } = this.state
+    const { paintings } = this.state
 
-    fetch('http://localhost:3000/api/drawroom/sync', {
-      method: 'POST', // or 'PUT'
+    let paintingsForStr = paintings[paintings.length - 1]
+
+    // console.log('до стрингофай', paintingsForStr)
+    let paintingsStr = JSON.stringify(paintingsForStr)
+    // console.log('после стрингофай', paintingsStr)
+
+    fetch('http://localhost:3000/api/drawroom/1.json', {
+      method: 'PATCH', // or 'PUT'
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ points: points })
+      body: JSON.stringify({
+        drawroom: { painting_container: paintingsStr }
+      })
     })
       // .then((response) => response.json())
       .then((data) => {
@@ -189,54 +150,50 @@ export default class CanvasContainer extends Component {
       })
   }
 
-  // syncDrawing(e, data) {
-  //   const ctx = canvas.getContext('2d')
-  //   console.log(data)
-  //
-  //   if (this.state.painting) {
-  //     console.log(e.clientX, e.clientY)
-  //     ctx.lineWidth = 3 * 2
-  //
-  //     ctx.lineTo(e.clientX, e.clientY)
-  //     ctx.stroke()
-  //
-  //     ctx.beginPath()
-  //     ctx.arc(e.clientX, e.clientY, 3, 0, Math.PI * 2)
-  //
-  //     let { canvases, points } = this.state
-  //     canvases.points.push([data])
-  //
-  //     this.setState({
-  //       canvases
-  //     })
-  //
-  //     ctx.fill()
-  //
-  //     ctx.beginPath()
-  //     ctx.moveTo(e.clientX, e.clientY)
-  //   }
-  // }
-
   handleReceivedCanvas(data) {
-    console.log('cableisworking', data)
+    // console.log('cableisworking', data)
+    fetch('http://localhost:3000/api/drawroom/index.json')
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+        // console.log(data)
 
-    data = JSON.parse(data)
+        const { paintings } = this.state
+        paintings: []
 
-    this.savePointsFromResponce(data)
+        data.forEach((drawroom, i) => {
+          paintings.push(drawroom.painting_container)
+        })
+
+        let paintingsJson = JSON.parse(paintings)
+        console.log(paintings)
+        console.log(JSON.parse(paintings))
+
+        // console.log('блааа', paintingsJson)
+
+        this.setState({
+          paintings: paintingsJson
+        })
+      })
   }
 
   render() {
     return (
       <div className="cover">
-        {this.props.points}
-        <ActionCable
+        <ActionCableConsumer
           channel={{ channel: 'CanvasChannel' }}
           onReceived={this.handleReceivedCanvas}
         />
-        <canvas id="canvas"></canvas>
-        <button className="saveButn" onClick={this.saveCanvas}>
-          Сохранить
-        </button>
+        <canvas ref={this.canvas}></canvas>
+        <div className="buttonCover">
+          <button className="saveButn" onClick={this.saveCanvas}>
+            Сохранить
+          </button>
+          <button className="saveButn" onClick={this.saveCanvas}>
+            Другая игра
+          </button>
+        </div>
       </div>
     )
   }
