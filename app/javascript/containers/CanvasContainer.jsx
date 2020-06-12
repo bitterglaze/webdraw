@@ -25,8 +25,6 @@ export default class CanvasContainer extends Component {
     this.renderPoints = this.renderPoints.bind(this)
   }
 
-  // preloadDrowroom() {}
-
   componentDidMount() {
     this.renderCanvas()
     this.randColor()
@@ -90,7 +88,7 @@ export default class CanvasContainer extends Component {
         prevPoint = point
       })
     })
-    // console.log(paintings)
+    console.log('провека renderPoints', paintings)
   }
 
   handleMouseDown(e) {
@@ -98,8 +96,7 @@ export default class CanvasContainer extends Component {
     paintings.push([])
 
     this.setState({
-      painting: true,
-      paintings
+      painting: true
     })
   }
 

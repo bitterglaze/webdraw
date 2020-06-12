@@ -5,9 +5,10 @@ Rails.application.routes.draw do
 
   namespace :api, format: :json do
     resources :drawroom do
-    patch 'drawrooms' => 'drawrooms#update'
+    # patch 'drawrooms' => 'drawrooms#update'
       collection do
         get 'index'
+        # patch 'update'
         post 'sync'
       end
     end
