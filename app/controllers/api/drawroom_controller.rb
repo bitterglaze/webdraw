@@ -40,4 +40,4 @@ end
 def get_player
   guest_uuid = cookies[:guest_uuid]
   @player = Player.where(guest_uuid: guest_uuid).last
- end
+end

@@ -14,8 +14,7 @@ class ApplicationController < ActionController::Base
       @player ||= Player.create!(guest_uuid: guest_uuid)
     # ЕСЛИ НЕТ ТО
     else
-      # Тегировать гостевого пользователя (добавить пользователю идентификатор)
-      # Создать ему корзину
+      # Тегировать гостевого пользователя, добавляем ему идентификатор
       uuid = SecureRandom.uuid
       cookies[:guest_uuid] = uuid
 
