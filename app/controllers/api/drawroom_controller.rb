@@ -16,15 +16,40 @@ before_action :get_player, only: [:show, :edit, :update, :destroy]
 
 
  def update
-   drawroom = Drawroom.find(params[:id])
-   drawroom.update(drawroom_params)
 
-   puts "UPDATED"
-   render json:{}
+   puts '================= drawroom_params ======='
+   puts drawroom_params[:painting_container]
 
-   puts drawroom
-   ActionCable.server.broadcast 'canvas_channel', drawroom
+   if drawroom_params[:painting_container] != ''
+     drawroom = Drawroom.find(params[:id])
+
+     painting_container = drawroom.painting_container
+     painting_container = painting_container.delete_suffix(']')
+     puts '================= painting_container ======='
+     puts painting_container
+
+
+     if painting_container == '['
+      painting_container = painting_container + drawroom_params[:painting_container] + ']'
+    else
+      painting_container = painting_container + ',' + drawroom_params[:painting_container] + ']'
+     end
+
+     puts '================= painting_container ======='
+     puts painting_container
+
+     # drawroom.painting_container = painting_container
+     drawroom.update_attribute(:painting_container, painting_container )
+     drawroom = Drawroom.find(params[:id])
+
+     puts "UPDATED"
+     render json:{}
+
+     puts drawroom
+     ActionCable.server.broadcast 'canvas_channel', drawroom
+   end
  end
+
 
  def drawroom_params
    params.require(:drawroom).permit(:empty, :painting_container )
@@ -37,7 +62,7 @@ end
 
 
 
-def get_player
-  guest_uuid = cookies[:guest_uuid]
-  @player = Player.where(guest_uuid: guest_uuid).last
-end
+# def get_player
+#   guest_uuid = cookies[:guest_uuid]
+#   @player = Player.where(guest_uuid: guest_uuid).last
+# end

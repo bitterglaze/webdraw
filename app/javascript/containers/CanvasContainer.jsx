@@ -29,7 +29,7 @@ export default class CanvasContainer extends Component {
     this.renderCanvas()
     this.randColor()
     this.renderPoints()
-    // this.handleReceivedCanvas()
+    this.handleReceivedCanvas()
   }
 
   componentDidUpdate() {
@@ -88,7 +88,6 @@ export default class CanvasContainer extends Component {
         prevPoint = point
       })
     })
-    console.log('провека renderPoints', paintings)
   }
 
   handleMouseDown(e) {
@@ -154,23 +153,16 @@ export default class CanvasContainer extends Component {
         return response.json()
       })
       .then((data) => {
+        let { paintings } = this.state
+        // paintings: []
+
         // console.log(data)
 
-        const { paintings } = this.state
-        paintings: []
-
-        data.forEach((drawroom, i) => {
-          paintings.push(drawroom.painting_container)
-        })
-
-        let paintingsJson = JSON.parse(paintings)
-        console.log(paintings)
-        console.log(JSON.parse(paintings))
-
-        // console.log('блааа', paintingsJson)
+        const paintingsData = JSON.parse(data[0].painting_container)
+        paintings.push(paintingsData)
 
         this.setState({
-          paintings: paintingsJson
+          paintings: paintingsData
         })
       })
   }
