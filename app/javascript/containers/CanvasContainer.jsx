@@ -7,7 +7,7 @@ export default class CanvasContainer extends Component {
 
     this.state = {
       painting: false,
-      paintings: [this.props.points]
+      paintings: []
     }
 
     this.canvas = React.createRef()
@@ -128,7 +128,7 @@ export default class CanvasContainer extends Component {
     let paintingsStr = JSON.stringify(paintingsForStr)
     // console.log('после стрингофай', paintingsStr)
 
-    fetch('http://localhost:3000/api/drawroom/1.json', {
+    fetch(`http://localhost:3000/api/drawroom/${this.props.id}.json`, {
       method: 'PATCH', // or 'PUT'
       headers: {
         'Content-Type': 'application/json'
@@ -148,7 +148,7 @@ export default class CanvasContainer extends Component {
 
   handleReceivedCanvas(data) {
     // console.log('cableisworking', data)
-    fetch('http://localhost:3000/api/drawroom/index.json')
+    fetch(`http://localhost:3000/api/drawroom/${this.props.id}.json`)
       .then((response) => {
         return response.json()
       })
@@ -158,12 +158,14 @@ export default class CanvasContainer extends Component {
 
         // console.log(data)
 
-        const paintingsData = JSON.parse(data[0].painting_container)
-        paintings.push(paintingsData)
+        if (data.painting_container != '') {
+          const paintingsData = JSON.parse(data.painting_container)
+          paintings.push(paintingsData)
 
-        this.setState({
-          paintings: paintingsData
-        })
+          this.setState({
+            paintings: paintingsData
+          })
+        }
       })
   }
 
@@ -175,14 +177,6 @@ export default class CanvasContainer extends Component {
           onReceived={this.handleReceivedCanvas}
         />
         <canvas ref={this.canvas}></canvas>
-        <div className="buttonCover">
-          <button className="saveButn" onClick={this.saveCanvas}>
-            Сохранить
-          </button>
-          <button className="saveButn" onClick={this.saveCanvas}>
-            Другая игра
-          </button>
-        </div>
       </div>
     )
   }

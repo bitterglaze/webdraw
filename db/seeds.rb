@@ -21,9 +21,9 @@ def reset_db
 end
 
 def create_canvas
-
+3.times do
   d = Drawroom.create!(painting_container: [])
-
+    end
   puts "Drawroom with id #{d.id} created"
 end
 

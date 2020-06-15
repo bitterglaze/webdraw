@@ -1,3 +1,135 @@
 // Place all the styles related to the welcome controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital@0;1&display=swap');
+
+p,
+h3 {
+  font-size: 18px;
+  font-style: italic;
+  line-height: 23px;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h3 {
+  margin-bottom: -10px;
+  color: #ab83fa;
+  font-style: normal;
+  font-weight: normal;
+}
+
+a {
+  font-size: 23px;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.startButn {
+  font-size: 23px;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-decoration-line: underline;
+  color: #000;
+  background: white;
+  box-sizing: border-box;
+  padding: 0;
+  border-width: 0;
+  border-style: outset;
+  border-color: white;
+  border-image: initial;
+
+  &:hover {
+    color: #fff;
+    background-color: #31d0d8;
+  }
+}
+
+.WelcomeCont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.Info {
+  // background-color: blue;
+  // margin-top: 18em;
+  // margin-bottom: 2em;
+  margin-top: 18%;
+}
+
+.StartDrawButn {
+  // background-color: yellow;
+  margin-top: 50vh;
+  // align-items: center;
+  // justify-content: center;
+  // margin: 0 auto;
+}
+
+// .FLOWER {
+//   position: absolute;
+//   left: 50%;
+//   top: 50%;
+//   margin-top: -200px;
+//   width: 137px;
+//   height: 137px;
+//   background-image: image_url('flower1.png');
+//   background-size: cover;
+//   background-repeat: no-repeat;
+//   z-index: 1;
+//
+//   // animation: spin 9s linear 0s infinite;
+//   // @keyframes spin {
+//   //   from {
+//   //     transform: rotate(0deg);
+//   //   }
+//   //   to {
+//   //     transform: rotate(360deg);
+//   //   }
+//   // }
+//
+//   animation: rotate 3s linear 0s infinite;
+//   @keyframes rotate {
+//     from {
+//       transform: rotate(0deg);
+//     }
+//     50% {
+//       transform: rotate(10deg);
+//     }
+//     to {
+//       transform: rotate(0deg);
+//     }
+//   }
+// }
+
+.STEAM {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -200px;
+  width: 140px;
+  height: 210px;
+  background-image: image_url('whole_flower.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 1;
+
+  animation: rotate 3s linear 0s infinite;
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(10deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+}

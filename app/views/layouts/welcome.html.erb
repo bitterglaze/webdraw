@@ -7,9 +7,20 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'hello_react' %>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital@0;1&display=swap" rel="stylesheet">
   </head>
 
   <body>
+    <div class="WelcomeCont">
+    <div class="StartDrawButn">
+      <%# @drawrooms.each do |drawroom| %>
+       <%#= link_to 'defrgth', drawroom_path(drawroom) %>
+      <%# end %>
+      <%= form_for :drawroom, url: {controller: "drawroom", action: "create"} do |f| %>
+          <%= f.submit 'Начать рисовать', :class => 'startButn'  %>
+      <% end %>
+    </div>
       <%= yield %>
+    </div>
   </body>
 </html>

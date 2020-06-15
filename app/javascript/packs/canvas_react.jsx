@@ -4,11 +4,10 @@ import CanvasContainer from '../containers/CanvasContainer'
 import { ActionCableProvider } from 'react-actioncable-provider'
 
 document.addEventListener('DOMContentLoaded', () => {
-  let props = document.getElementById('CanvasProps').dataset.props
-  let testContent = JSON.parse(props)
+  const id = document.getElementById('CanvasProps').dataset.id
   ReactDOM.render(
     <ActionCableProvider url="ws://localhost:3000/cable">
-      <CanvasContainer points={testContent} />
+      <CanvasContainer id={id} />
     </ActionCableProvider>,
     document.body.appendChild(document.createElement('div'))
   )

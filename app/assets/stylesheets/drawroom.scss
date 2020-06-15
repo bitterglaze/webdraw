@@ -13,40 +13,40 @@
   flex-direction: row;
 }
 
-.buttonCover {
-  position: absolute;
-  z-index: 1;
-  // margin: 0 auto;
-  left: 50%;
-  margin-left: -125px;
-  bottom: 3%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+// .buttonCover {
+//   position: absolute;
+//   z-index: 1;
+//   // margin: 0 auto;
+//   left: 50%;
+//   margin-left: -125px;
+//   bottom: 3%;
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-around;
 
-  .saveButn {
-    // box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-    width: 125px;
-    height: 40px;
-    border-top: 3px solid white;
-    border-right: 3px solid #222;
-    border-bottom: 3px solid #222;
-    border-left: 3px solid white;
-    font-size: 16px;
-    // margin: 3px;
-
-    &:hover {
-      border-top: 3px solid #666;
-      border-right: 3px solid white;
-      border-bottom: 3px solid white;
-      border-left: 3px solid #666;
-    }
-
-    &:focus {
-      border-top: 4px solid #666;
-      border-right: 4px solid white;
-      border-bottom: 4px solid white;
-      border-left: 4px solid #666;
-    }
-  }
-}
+//   .saveButn {
+//     // box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+//     width: 125px;
+//     height: 40px;
+//     border-top: 3px solid white;
+//     border-right: 3px solid #222;
+//     border-bottom: 3px solid #222;
+//     border-left: 3px solid white;
+//     font-size: 16px;
+//     // margin: 3px;
+//
+//     &:hover {
+//       border-top: 3px solid #666;
+//       border-right: 3px solid white;
+//       border-bottom: 3px solid white;
+//       border-left: 3px solid #666;
+//     }
+//
+//     &:focus {
+//       border-top: 4px solid #666;
+//       border-right: 4px solid white;
+//       border-bottom: 4px solid white;
+//       border-left: 4px solid #666;
+//     }
+//   }
+// }
